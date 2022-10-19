@@ -83,7 +83,8 @@ worksheet {'name': 'на здании ГГС'}"""
 # Заменяем определенную колонку на нужное значение и создаем новый файл хмл
 for raion in root.iter('Column3'):
     raion.text = '50:15'
-# tree.write('updated.xml', encoding='utf-8')
 
+# Создаем столько файлов, сколько кортежей в общем списке, файлы создаются по названию поселка(в данном случае)
 for i in range(len(total_spisok)):
-    print(*total_spisok[i])
+    b =+ i
+    # tree.write(f'{total_spisok[b][0]}.xml', encoding='utf-8')
