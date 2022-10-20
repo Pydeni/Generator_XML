@@ -67,8 +67,15 @@ total_spisok = list(zip(name_punkt, name_raion, name_tocha_1x, name_tocha_1y, na
 
 
 # Парсим хмл
-tree = ET.parse('Тестовый хмл.xml')
+tree = ET.parse('Территории.xml')
 root = tree.getroot()
+
+for neighbor in root.iter('{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
+    print(neighbor.attrib)
+
+
+
+
 
 # Получается словарь (тег - ключ(name), attr - значение(название листа)).
 # for child in root:
@@ -81,10 +88,10 @@ worksheet {'name': 'на здании ГГС'}"""
 """Район"""
 
 # Заменяем определенную колонку на нужное значение и создаем новый файл хмл
-for raion in root.iter('Column3'):
-    raion.text = '50:15'
+# for raion in root.iter('Column3'):
+#     raion.text = '50:15'
 
 # Создаем столько файлов, сколько кортежей в общем списке, файлы создаются по названию поселка(в данном случае)
-for i in range(len(total_spisok)):
-    b =+ i
+# for i in range(len(total_spisok)):
+#     b =+ i
     # tree.write(f'{total_spisok[b][0]}.xml', encoding='utf-8')
