@@ -3,11 +3,17 @@ from openpyxl import load_workbook
 
 # Загружаем файл экселя
 wb = load_workbook('Координаты пунктов 100 охранных зон пунктов ГГС.xlsx')
-ws = wb.worksheets[0]
+
+
+# печатаем список листов
+# sheets = wb.sheetnames
+# for sheet in sheets:
+#     print(sheet)
+
+# Делаем первый лист активным
+sheet = wb.active
 
 # Добавляем данные из книги в список
-sheet = wb.active  # Активный лист в книге
-
 # Наименования пунктов в столбце В2
 name_punkt = []
 for val in sheet['B'][2:]:
@@ -58,11 +64,59 @@ name_tocha_4y = []
 for val in sheet['K'][2:]:
     name_tocha_4y.append(val.value)
 
+# получаем другой лист
+sheet2 = wb['на здании ГГС']
 
-# Объединяем все списки в один список кортежей
+# Делаем второй лист активным
+wb.active = 1
+
+# Наименования пунктов в столбце В2
+for val in sheet2['B'][2:]:
+    name_punkt.append(val.value)
+
+# Номера районов в столбце С2
+for val in sheet2['C'][2:]:
+    name_raion.append(val.value)
+
+# Точка 1x, ячейка D2
+for val in sheet2['D'][2:]:
+    name_tocha_1x.append(val.value)
+
+# Точка 1y, ячейка E2
+for val in sheet2['E'][2:]:
+    name_tocha_1y.append(val.value)
+
+# Точка 2x, ячейка F2
+for val in sheet2['F'][2:]:
+    name_tocha_2x.append(val.value)
+
+# Точка 2y, ячейка G2
+for val in sheet2['G'][2:]:
+    name_tocha_2y.append(val.value)
+
+# Точка 3x, ячейка H2
+for val in sheet2['H'][2:]:
+    name_tocha_3x.append(val.value)
+
+# Точка 3y, ячейка I2
+for val in sheet2['I'][2:]:
+    name_tocha_3y.append(val.value)
+
+# Точка 4x, ячейка J2
+for val in sheet2['J'][2:]:
+    name_tocha_4x.append(val.value)
+
+# Точка 4y, ячейка K2
+for val in sheet2['K'][2:]:
+    name_tocha_4y.append(val.value)
+
+# Объединяем все списки первого листа в один список кортежей
 total_spisok = list(zip(name_punkt, name_raion, name_tocha_1x, name_tocha_1y, name_tocha_2x, name_tocha_2y,
-                        name_tocha_3x, name_tocha_3y, name_tocha_4x, name_tocha_4y))
+                         name_tocha_3x, name_tocha_3y, name_tocha_4x, name_tocha_4y))
 
+# Пройдись циклом и удали NONE
+for gg in total_spisok:
+    print(gg)
 
 
 # Добавляем пространство имен, если есть
@@ -81,13 +135,13 @@ ET.register_namespace("schemaLocation", "urn://x-artefacts-rosreestr-ru/incoming
 tree = ET.parse('Территории.xml')
 root = tree.getroot()
 
+# Проходимся по общему списку и в каждом меняеем координаты
 for i in range(1):
     b =+ i
     count = 1
     x = 2
     y = 3
     for neighbor in root.iter('{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
-        print(neighbor.attrib)
         if count == 5:
             neighbor.attrib['X'] = total_spisok[b][2]
             neighbor.attrib['Y'] = total_spisok[b][3]
@@ -99,9 +153,9 @@ for i in range(1):
             count += 1
 
 
-    tree.write(f'{total_spisok[b][0]}.xml', encoding='utf-8', xml_declaration = True)
-for sp in total_spisok[:1]:
-    print(sp)
+    # tree.write(f'{total_spisok[b][0]}.xml', encoding='utf-8', xml_declaration = True)
+# for sp in total_spisok[:-1]:
+#     print(sp)
 
 
 
