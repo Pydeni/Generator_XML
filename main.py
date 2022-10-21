@@ -1,7 +1,5 @@
 import xml.etree.ElementTree as ET
-from xml.dom import minidom
 from openpyxl import load_workbook
-from datetime import datetime
 
 # Загружаем файл экселя
 wb = load_workbook('Координаты пунктов 100 охранных зон пунктов ГГС.xlsx')
@@ -66,13 +64,44 @@ total_spisok = list(zip(name_punkt, name_raion, name_tocha_1x, name_tocha_1y, na
                         name_tocha_3x, name_tocha_3y, name_tocha_4x, name_tocha_4y))
 
 
+
+# Добавляем пространство имен, если есть
+
+ET.register_namespace("", "urn://x-artefacts-rosreestr-ru/incoming/territory-to-gkn/1.0.4")
+ET.register_namespace("p1", "http://www.w3.org/2001/XMLSchema-instance")
+ET.register_namespace("Spa2", "urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1")
+# ET.register_namespace("CadEng4", "urn://x-artefacts-rosreestr-ru/commons/complex-types/cadastral-engineer/4.1.1")
+# ET.register_namespace("Doc5", "urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1")
+ET.register_namespace("tns", "urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1")
+ET.register_namespace("schemaLocation", "urn://x-artefacts-rosreestr-ru/incoming/territory-to-gkn/1.0.4 TerritoryToGKN_v01.xsd")
+ET.register_namespace("dsfsd", "urn://132423")
+
+
 # Парсим хмл
 tree = ET.parse('Территории.xml')
 root = tree.getroot()
 
-for neighbor in root.iter('{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
-    print(neighbor.attrib)
+for i in range(1):
+    b =+ i
+    count = 1
+    x = 2
+    y = 3
+    for neighbor in root.iter('{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
+        print(neighbor.attrib)
+        if count == 5:
+            neighbor.attrib['X'] = total_spisok[b][2]
+            neighbor.attrib['Y'] = total_spisok[b][3]
+        else:
+            neighbor.attrib['X'] = total_spisok[b][x]
+            neighbor.attrib['Y'] = total_spisok[b][y]
+            x += 2
+            y += 2
+            count += 1
 
+
+    tree.write(f'{total_spisok[b][0]}.xml', encoding='utf-8', xml_declaration = True)
+for sp in total_spisok[:1]:
+    print(sp)
 
 
 
@@ -94,4 +123,4 @@ worksheet {'name': 'на здании ГГС'}"""
 # Создаем столько файлов, сколько кортежей в общем списке, файлы создаются по названию поселка(в данном случае)
 # for i in range(len(total_spisok)):
 #     b =+ i
-    # tree.write(f'{total_spisok[b][0]}.xml', encoding='utf-8')
+#     tree.write(f'{total_spisok[b][0]}.xml', encoding='utf-8')
