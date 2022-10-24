@@ -114,13 +114,13 @@ for val in sheet2['K'][2:]:
 total_spisok = list(zip(name_punkt, name_raion, name_tocha_1x, name_tocha_1y, name_tocha_2x, name_tocha_2y,
                          name_tocha_3x, name_tocha_3y, name_tocha_4x, name_tocha_4y))
 
-# Пройдись циклом и удали NONE
+# Проходимся циклом и удаляем NONE
 for gg in total_spisok:
-    print(gg)
-
+    if gg[0] == None:
+        indx = total_spisok.index(gg)
+        del total_spisok[indx]
 
 # Добавляем пространство имен, если есть
-
 ET.register_namespace("", "urn://x-artefacts-rosreestr-ru/incoming/territory-to-gkn/1.0.4")
 ET.register_namespace("p1", "http://www.w3.org/2001/XMLSchema-instance")
 ET.register_namespace("Spa2", "urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1")
@@ -153,7 +153,7 @@ for i in range(1):
             count += 1
 
 
-    # tree.write(f'{total_spisok[b][0]}.xml', encoding='utf-8', xml_declaration = True)
+    tree.write(f'{total_spisok[b][0]}.xml', encoding='utf-8', xml_declaration = True)
 # for sp in total_spisok[:-1]:
 #     print(sp)
 
