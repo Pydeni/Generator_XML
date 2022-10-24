@@ -136,30 +136,32 @@ tree = ET.parse('Территории.xml')
 root = tree.getroot()
 
 # Проходимся по общему списку и в каждом меняеем координаты
-for i in range(1):
-    b =+ i
+for i in range(len(total_spisok)):
+    ychastok =+ i
+    raion = total_spisok[ychastok][1]
     count = 1
     x = 2
     y = 3
     for neighbor in root.iter('{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
         if count == 5:
-            neighbor.attrib['X'] = total_spisok[b][2]
-            neighbor.attrib['Y'] = total_spisok[b][3]
+            neighbor.attrib['X'] = total_spisok[ychastok][2]
+            neighbor.attrib['Y'] = total_spisok[ychastok][3]
         else:
-            neighbor.attrib['X'] = total_spisok[b][x]
-            neighbor.attrib['Y'] = total_spisok[b][y]
+            neighbor.attrib['X'] = total_spisok[ychastok][x]
+            neighbor.attrib['Y'] = total_spisok[ychastok][y]
             x += 2
             y += 2
             count += 1
 
 
-    tree.write(f'{total_spisok[b][0]}.xml', encoding='utf-8', xml_declaration = True)
-# for sp in total_spisok[:-1]:
-#     print(sp)
+    # tree.write(f'C:\\Users\\Denis\\PycharmProjects\\Generator_XML\\Готовые\\'
+    #            f'{total_spisok[ychastok][0]}.xml',
+    #             encoding='utf-8', xml_declaration = True)
 
 
 
 
+"""Для запоминания"""
 # Получается словарь (тег - ключ(name), attr - значение(название листа)).
 # for child in root:
 #     print(child.tag, child.attrib)
