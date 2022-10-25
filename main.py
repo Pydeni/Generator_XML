@@ -154,9 +154,9 @@ for i in range(len(total_spisok)):
             count += 1
 
 
-    # tree.write(f'C:\\Users\\Denis\\PycharmProjects\\Generator_XML\\Готовые\\'
-    #            f'{total_spisok[ychastok][0]}.xml',
-    #             encoding='utf-8', xml_declaration = True)
+    tree.write(f'.//Готовые//'
+               f'{total_spisok[ychastok][0]}.xml',
+                encoding='utf-8', xml_declaration = True)
 
 
 
