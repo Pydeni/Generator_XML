@@ -155,7 +155,7 @@ for i in range(len(total_spisok)):
 
 
     tree.write(f'.//Готовые//'
-               f'{total_spisok[ychastok][0]}.xml',
+               f'{total_spisok[ychastok][0]} {total_spisok[ychastok][1][:2]}_{total_spisok[ychastok][1][3:]}.xml',
                 encoding='utf-8', xml_declaration = True)
 
 
