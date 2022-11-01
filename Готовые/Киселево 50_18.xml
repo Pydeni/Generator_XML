@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TerritoryToGKN xmlns="urn://x-artefacts-rosreestr-ru/incoming/territory-to-gkn/1.0.4" xmlns:Spa2="urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1" xmlns:p1="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" NameSoftware="АРГО" VersionSoftware="7.1.9573" GUID="64e0c1f3-c42c-433e-a5ea-6dcdfbc1fe31" p1:schemaLocation="urn://x-artefacts-rosreestr-ru/incoming/territory-to-gkn/1.0.4 TerritoryToGKN_v01.xsd">
+  <Title>
+    <Clients>
+      <Client Date="2022-10-20">
+        <Organization>
+          <Name>Управление Росреестра по Московской области</Name>
+          <Agent>
+            <Appointment>Руководитель</Appointment>
+            <tns:FamilyName>Зайцева</tns:FamilyName>
+            <tns:FirstName>Светлана</tns:FirstName>
+            <tns:Patronymic>Юрьевна</tns:Patronymic>
+          </Agent>
+        </Organization>
+      </Client>
+    </Clients>
+    <Contractor>
+      <OrganisationContractor>
+        <Name>Управление Росреестра по Московской области</Name>
+        <CodeOGRN>1027700485757</CodeOGRN>
+        <Address>143403, МОСКОВСКАЯ ОБЛАСТЬ, Г. КРАСНОГОРСК, УЛ. РЕЧНАЯ, Д.8</Address>
+      </OrganisationContractor>
+    </Contractor>
+  </Title>
+  <EntitySpatial EntSys="ID50.2">
+    <Spa2:SpatialElement>
+      <Spa2:SpelementUnit TypeUnit="Точка" SuNmb="1">
+        <Spa2:Ordinate X="431532.47" Y="1248485.62" NumGeopoint="1" DeltaGeopoint="0.10" GeopointOpred="692006000000" />
+      </Spa2:SpelementUnit>
+      <Spa2:SpelementUnit TypeUnit="Точка" SuNmb="2">
+        <Spa2:Ordinate X="431532.47" Y="1248489.62" NumGeopoint="2" DeltaGeopoint="0.10" GeopointOpred="692006000000" />
+      </Spa2:SpelementUnit>
+      <Spa2:SpelementUnit TypeUnit="Точка" SuNmb="3">
+        <Spa2:Ordinate X="431528.47" Y="1248489.62" NumGeopoint="3" DeltaGeopoint="0.10" GeopointOpred="692006000000" />
+      </Spa2:SpelementUnit>
+      <Spa2:SpelementUnit TypeUnit="Точка" SuNmb="4">
+        <Spa2:Ordinate X="431528.47" Y="1248485.62" NumGeopoint="4" DeltaGeopoint="0.10" GeopointOpred="692006000000" />
+      </Spa2:SpelementUnit>
+      <Spa2:SpelementUnit TypeUnit="Точка" SuNmb="1">
+        <Spa2:Ordinate X="431532.47" Y="1248485.62" NumGeopoint="1" DeltaGeopoint="0.10" GeopointOpred="692006000000" />
+      </Spa2:SpelementUnit>
+    </Spa2:SpatialElement>
+  </EntitySpatial>
+  <CoordSystems>
+    <Spa2:CoordSystem Name="МСК-50, зона 2" CsId="ID50.2" />
+  </CoordSystems>
+  <Diagram>
+    <AppliedFile Kind="01" Name="Applied_files\Diagram_1.pdf" />
+  </Diagram>
+</TerritoryToGKN>
