@@ -1,6 +1,13 @@
 import xml.etree.ElementTree as ET
 from openpyxl import load_workbook
+import uuid
 
+# # Генерируем рандомный GUID
+# guid = uuid.uuid4()
+# # Конвертируем в строку
+# str_guid = str(uuid.uuid4())
+# print(guid)
+# print(str_guid)
 # Загружаем файл экселя
 wb = load_workbook('Координаты пунктов 100 охранных зон пунктов ГГС.xlsx')
 
@@ -66,6 +73,7 @@ for val in sheet['K'][2:]:
 
 # получаем другой лист
 sheet2 = wb['на здании ГГС']
+
 
 # Делаем второй лист активным
 wb.active = 1
@@ -154,9 +162,9 @@ for i in range(len(total_spisok)):
             count += 1
 
 
-    tree.write(f'.//Готовые//'
-               f'{total_spisok[ychastok][0]} {total_spisok[ychastok][1][:2]}_{total_spisok[ychastok][1][3:]}.xml',
-                encoding='utf-8', xml_declaration = True)
+    # tree.write(f'.//Готовые//'
+    #            f'{total_spisok[ychastok][0]} {total_spisok[ychastok][1][:2]}_{total_spisok[ychastok][1][3:]}.xml',
+    #             encoding='utf-8', xml_declaration = True)
 
 
 
