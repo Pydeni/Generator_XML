@@ -2,12 +2,6 @@ import xml.etree.ElementTree as ET
 from openpyxl import load_workbook
 import uuid
 
-# # Генерируем рандомный GUID
-# guid = uuid.uuid4()
-# # Конвертируем в строку
-# str_guid = str(uuid.uuid4())
-# print(guid)
-# print(str_guid)
 # Загружаем файл экселя
 wb = load_workbook('Координаты пунктов 100 охранных зон пунктов ГГС.xlsx')
 
@@ -49,48 +43,50 @@ for gg in total_sp:
     if gg[0] == None:
         indx = total_sp.index(gg)
         del total_sp[indx]
+    else:
+        gg.append(gg[2])
+        gg.append(gg[3])
+# for vv in total_sp:
+#     print(vv)
 
-for vv in total_sp:
-    print(vv)
+# Генерируем рандомный GUID
+guid = uuid.uuid4()
+# Конвертируем в строку
+str_guid = str(uuid.uuid4())
 
 # # Добавляем пространство имен, если есть
-# ET.register_namespace("", "urn://x-artefacts-rosreestr-ru/incoming/territory-to-gkn/1.0.4")
-# ET.register_namespace("p1", "http://www.w3.org/2001/XMLSchema-instance")
-# ET.register_namespace("Spa2", "urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1")
-# ET.register_namespace("CadEng4", "urn://x-artefacts-rosreestr-ru/commons/complex-types/cadastral-engineer/4.1.1")
-# ET.register_namespace("Doc5", "urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1")
-# ET.register_namespace("tns", "urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1")
-# ET.register_namespace("schemaLocation", "urn://x-artefacts-rosreestr-ru/incoming/territory-to-gkn/1.0.4 TerritoryToGKN_v01.xsd")
+ET.register_namespace("", "urn://x-artefacts-rosreestr-ru/incoming/territory-to-gkn/1.0.4")
+ET.register_namespace("p1", "http://www.w3.org/2001/XMLSchema-instance")
+ET.register_namespace("Spa2", "urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1")
+ET.register_namespace("CadEng4", "urn://x-artefacts-rosreestr-ru/commons/complex-types/cadastral-engineer/4.1.1")
+ET.register_namespace("Doc5", "urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1")
+ET.register_namespace("tns", "urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1")
+ET.register_namespace("schemaLocation", "urn://x-artefacts-rosreestr-ru/incoming/territory-to-gkn/1.0.4 TerritoryToGKN_v01.xsd")
 
 
 #
 # # Парсим хмл
-# tree = ET.parse('Территории.xml')
-# root = tree.getroot()
-#
-# # Проходимся по общему списку и в каждом меняеем координаты
-# for i in range(len(total_sp)):
-#     ychastok =+ i
-#     raion = total_sp[ychastok][1]
-#     count = 1
-#     x = 2
-#     y = 3
-#     for neighbor in root.iter('{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
-#         if count == 5:
-#             neighbor.attrib['X'] = total_sp[ychastok][2]
-#             neighbor.attrib['Y'] = total_sp[ychastok][3]
-#         else:
-#             neighbor.attrib['X'] = total_sp[ychastok][x]
-#             neighbor.attrib['Y'] = total_sp[ychastok][y]
-#             x += 2
-#             y += 2
-#             count += 1
+tree = ET.parse('Территории.xml')
+root = tree.getroot()
 
+# Проходимся по общему списку и в каждом меняем координаты
+for i in range(len(total_sp)):
+    ychastok =+ i
+    raion = total_sp[ychastok][1]
+    x = 2
+    y = 3
+    for neighbor in root.iter('{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
+            neighbor.attrib['X'] = total_sp[ychastok][x]
+            neighbor.attrib['Y'] = total_sp[ychastok][y]
+            x += 2
+            y += 2
 
     # tree.write(f'.//Готовые//'
-    #            f'{total_spisok[ychastok][0]} {total_spisok[ychastok][1][:2]}_{total_spisok[ychastok][1][3:]}.xml',
+    #            f'{total_sp[ychastok][0]} {total_sp[ychastok][1][:2]}_{total_sp[ychastok][1][3:]}.xml',
     #             encoding='utf-8', xml_declaration = True)
 
+# print(root[1][0][1].attrib)
+# https://tonais.ru/file/rabota-xml-python-elementtree
 
 
 
