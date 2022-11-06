@@ -73,27 +73,35 @@ root = tree.getroot()
 for i in range(len(total_sp)):
     ychastok =+ i
     raion = total_sp[ychastok][1]
+    count = 0
     x = 2
     y = 3
+    tochka = len(total_sp[ychastok][2:-2])/2
+    attrib_1 = {"TypeUnit": "Точка", "SuNmb": str(1)}
+    attrib_2 = {"X": str(total_sp[ychastok][x]), "Y": str(total_sp[ychastok][y]), "NumGeopoint": str(1), "DeltaGeopoint": "0.10",
+                "GeopointOpred": "692006000000"}
     for neighbor in root.iter('{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
             neighbor.attrib['X'] = total_sp[ychastok][x]
             neighbor.attrib['Y'] = total_sp[ychastok][y]
             x += 2
             y += 2
+            count += 1
+    # ET.SubElement(root[1][0], "{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}SpelementUnit", attrib_1)
+    # ET.SubElement(root[1][0][5], '{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate', attrib_2)
+    tree.write(f'.//Готовые//{total_sp[ychastok][0]} {total_sp[ychastok][1][:2]}_{total_sp[ychastok][1][3:]}.xml',
+               encoding='utf-8', xml_declaration = True)
 
-    # tree.write(f'.//Готовые//'
-    #            f'{total_sp[ychastok][0]} {total_sp[ychastok][1][:2]}_{total_sp[ychastok][1][3:]}.xml',
-    #             encoding='utf-8', xml_declaration = True)
-
-# print(root[1][0][1].attrib)
-# https://tonais.ru/file/rabota-xml-python-elementtree
+# print(root[1][0][0])
 
 
+# for xx in root.iter("{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}SpatialElement"):
+#     print(xx[0].attrib)
 
 """Для запоминания"""
 # Получается словарь (тег - ключ(name), attr - значение(название листа)).
 # for child in root:
 #     print(child.tag, child.attrib)
+
 """worksheet {'name': 'грунтовые ГГС'}
 worksheet {'name': 'на здании ГГС'}"""
 
