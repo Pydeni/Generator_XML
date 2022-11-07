@@ -38,14 +38,14 @@ for i in range(2, sheet2.max_row):
     total_sp.append(sp)
 # Удаляем последний элемент (он пустой список)
 del total_sp[-1]
-# Проходимся циклом и удаляем NONE
+# В первом цикле добавляем X и Y в конец списка, 2 циклом удаляем NONE
 for gg in total_sp:
-    if gg[0] == None:
-        indx = total_sp.index(gg)
+    gg.append(gg[2])
+    gg.append(gg[3])
+for nn in total_sp:
+    if nn[0] == None:
+        indx = total_sp.index(nn)
         del total_sp[indx]
-    else:
-        gg.append(gg[2])
-        gg.append(gg[3])
 # for vv in total_sp:
 #     print(vv)
 
@@ -73,23 +73,41 @@ root = tree.getroot()
 for i in range(len(total_sp)):
     ychastok =+ i
     raion = total_sp[ychastok][1]
-    count = 0
     x = 2
     y = 3
-    tochka = len(total_sp[ychastok][2:-2])/2
+    count = 0
     attrib_1 = {"TypeUnit": "Точка", "SuNmb": str(1)}
     attrib_2 = {"X": str(total_sp[ychastok][x]), "Y": str(total_sp[ychastok][y]), "NumGeopoint": str(1), "DeltaGeopoint": "0.10",
                 "GeopointOpred": "692006000000"}
     for neighbor in root.iter('{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
-            neighbor.attrib['X'] = total_sp[ychastok][x]
-            neighbor.attrib['Y'] = total_sp[ychastok][y]
-            x += 2
-            y += 2
-            count += 1
+            if len(total_sp[ychastok][11:]) == 1:
+                neighbor.attrib['X'] = total_sp[ychastok][x]
+                neighbor.attrib['Y'] = total_sp[ychastok][y]
+                x += 2
+                y += 2
+                count += 1
+                if count == 5:
+                    neighbor.attrib['X'] = total_sp[ychastok][2]
+                    neighbor.attrib['Y'] = total_sp[ychastok][3]
+                    count = 0
+                    x = 2
+                    y = 3
+            # if len(total_sp[ychastok][11:]) > 1:
+            #     neighbor.attrib['X'] = total_sp[ychastok][x]
+            #     neighbor.attrib['Y'] = total_sp[ychastok][y]
+            #     x += 2
+            #     y += 2
+            #     count += 1
+            #     if count >= 5 :
+            #         neighbor.attrib['X'] = total_sp[ychastok][2]
+            #         neighbor.attrib['Y'] = total_sp[ychastok][3]
+            #         count = 0
+            #         x = 2
+            #         y = 3
     # ET.SubElement(root[1][0], "{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}SpelementUnit", attrib_1)
     # ET.SubElement(root[1][0][5], '{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate', attrib_2)
-    tree.write(f'.//Готовые//{total_sp[ychastok][0]} {total_sp[ychastok][1][:2]}_{total_sp[ychastok][1][3:]}.xml',
-               encoding='utf-8', xml_declaration = True)
+    # tree.write(f'.//Готовые//{total_sp[ychastok][0]} {total_sp[ychastok][1][:2]}_{total_sp[ychastok][1][3:]}.xml',
+    #            encoding='utf-8', xml_declaration = True)
 
 # print(root[1][0][0])
 
