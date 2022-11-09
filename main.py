@@ -39,9 +39,9 @@ for i in range(2, sheet2.max_row):
 # Удаляем последний элемент (он пустой список)
 del total_sp[-1]
 # В первом цикле добавляем X и Y в конец списка, 2 циклом удаляем NONE
-# for gg in total_sp:
-#     gg.append(gg[2])
-#     gg.append(gg[3])
+for gg in total_sp:
+    gg.append(gg[2])
+    gg.append(gg[3])
 for nn in total_sp:
     if nn[0] == None:
         indx = total_sp.index(nn)
@@ -80,32 +80,22 @@ for i in range(len(total_sp)):
     attrib_2 = {"X": str(total_sp[ychastok][x]), "Y": str(total_sp[ychastok][y]), "NumGeopoint": str(count), "DeltaGeopoint": "0.10",
                 "GeopointOpred": "692006000000"}
     for neighbor in root.iter('{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
-            if len(total_sp[ychastok][11:]) == 0 and count < 5:
-                neighbor.attrib['X'] = total_sp[ychastok][x]
-                neighbor.attrib['Y'] = total_sp[ychastok][y]
-                x += 2
-                y += 2
-                count += 1
-            if len(total_sp[ychastok][11:]) == 0 and count == 6:
-                count = 1
-                neighbor.attrib['X'] = total_sp[ychastok][2]
-                neighbor.attrib['Y'] = total_sp[ychastok][3]
-                x = 2
-                y = 3
-            if len(total_sp[ychastok][11:]) > 0 and count < 5:
-                neighbor.attrib['X'] = total_sp[ychastok][x]
-                neighbor.attrib['Y'] = total_sp[ychastok][y]
-                x += 2
-                y += 2
-                count += 1
-            if len(total_sp[ychastok][11:]) > 0 and count == 6:
+        if len(total_sp[ychastok][11:]) == 1:
+            neighbor.attrib['X'] = total_sp[ychastok][x]
+            neighbor.attrib['Y'] = total_sp[ychastok][y]
+            x += 2
+            y += 2
+        if len(total_sp[ychastok][11:]) > 1:
+            neighbor.attrib['X'] = total_sp[ychastok][x]
+            neighbor.attrib['Y'] = total_sp[ychastok][y]
+            x += 2
+            y += 2
+            count += 1
+            if count == 6: # шестерка потому что, после пятой точки , становится 6 и тогда заходит в этот if.
                 root[1][0][4].attrib['SuNmb'] = '5'
                 neighbor.attrib['NumGeopoint'] = "5"
-                neighbor.attrib['X'] = total_sp[ychastok][x]
-                neighbor.attrib['Y'] = total_sp[ychastok][y]
-                x += 2
-                y += 2
-                count += 1
+
+            #     count += 1
                 # if count > 5:
                 #     ET.SubElement(root[1][0],
                 #                   "{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}SpelementUnit",
