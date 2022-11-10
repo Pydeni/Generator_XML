@@ -76,10 +76,15 @@ for i in range(len(total_sp)):
     x = 2
     y = 3
     count = 1
-    attrib_1 = {"TypeUnit": "Точка", "SuNmb": str(count)}
-    attrib_2 = {"X": str(total_sp[ychastok][x]), "Y": str(total_sp[ychastok][y]), "NumGeopoint": str(count), "DeltaGeopoint": "0.10",
-                "GeopointOpred": "692006000000"}
+    number_tochki = 6
+    koord = 6
     for neighbor in root.iter('{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
+        DeltaGeopoint = str(neighbor.attrib['DeltaGeopoint'])
+        GeopointOpred = str(neighbor.attrib['GeopointOpred'])
+        attrib_1 = {"TypeUnit": "Точка", "SuNmb": str(number_tochki)}
+        attrib_2 = {"X": str(total_sp[ychastok][x]), "Y": str(total_sp[ychastok][y]), "NumGeopoint": str(number_tochki),
+                    "DeltaGeopoint": DeltaGeopoint,
+                    "GeopointOpred": GeopointOpred}
         if len(total_sp[ychastok][11:]) == 1:
             neighbor.attrib['X'] = total_sp[ychastok][x]
             neighbor.attrib['Y'] = total_sp[ychastok][y]
@@ -94,19 +99,18 @@ for i in range(len(total_sp)):
             if count == 6: # шестерка потому что, после пятой точки , становится 6 и тогда заходит в этот if.
                 root[1][0][4].attrib['SuNmb'] = '5'
                 neighbor.attrib['NumGeopoint'] = "5"
+                count += 1
+            if count > 6:
+                # for elem in range(len(total_sp[12:])):
+                ET.SubElement(root[1][0],
+                                  "{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}SpelementUnit",
+                                  attrib_1)
+                ET.SubElement(root[1][0][5],
+                                  "{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate ",
+                                  attrib_2)
 
-            #     count += 1
-                # if count > 5:
-                #     ET.SubElement(root[1][0],
-                #                   "{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}SpelementUnit",
-                #                   attrib_1)
-                #     ET.SubElement(root[1][0][count-1],
-                #                   '{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate',
-                #                   attrib_2)
-                #     count += 1
-                #     x += 2
-                #     y += 2
-
+                    # number_tochki += 1
+                    # koord += 1
     tree.write(f'.//Готовые//{total_sp[ychastok][0]} {total_sp[ychastok][1][:2]}_{total_sp[ychastok][1][3:]}.xml',
                encoding='utf-8', xml_declaration = True)
 
