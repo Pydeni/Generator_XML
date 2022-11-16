@@ -6,7 +6,7 @@ import uuid
 wb = load_workbook('Координаты пунктов 100 охранных зон пунктов ГГС.xlsx')
 
 
-# печатаем список листов
+# печатаем список листов если надо
 # sheets = wb.sheetnames
 # for sheet in sheets:
 #     print(sheet)
@@ -49,12 +49,9 @@ for nn in total_sp:
 # for vv in total_sp:
 #     print(vv)
 
-# Генерируем рандомный GUID
-guid = uuid.uuid4()
-# Конвертируем в строку
-str_guid = str(uuid.uuid4())
 
-# # Добавляем пространство имен, если есть
+
+#Добавляем пространство имен, если есть
 ET.register_namespace("", "urn://x-artefacts-rosreestr-ru/incoming/territory-to-gkn/1.0.4")
 ET.register_namespace("p1", "http://www.w3.org/2001/XMLSchema-instance")
 ET.register_namespace("Spa2", "urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1")
@@ -63,43 +60,49 @@ ET.register_namespace("Doc5", "urn://x-artefacts-rosreestr-ru/commons/complex-ty
 ET.register_namespace("tns", "urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1")
 ET.register_namespace("schemaLocation", "urn://x-artefacts-rosreestr-ru/incoming/territory-to-gkn/1.0.4 TerritoryToGKN_v01.xsd")
 
-
-#
-# # Парсим хмл
+#Парсим хмл
 tree = ET.parse('Территории.xml')
 root = tree.getroot()
 
 # Проходимся по общему списку и в каждом меняем координаты
 for i in range(len(total_sp)):
+    # Генерируем рандомный GUID
+    guid = uuid.uuid4()
+    # Конвертируем в строку
+    str_guid = str(uuid.uuid4())
     ychastok =+ i
     raion = total_sp[ychastok][1]
-    print(len(total_sp[ychastok][11:]))
     x = 2
     y = 3
     count = 1
     number_tochki = 6
     number_coord = 5
-    for neighbor in root.iter('{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
-        DeltaGeopoint = str(neighbor.attrib['DeltaGeopoint'])
-        GeopointOpred = str(neighbor.attrib['GeopointOpred'])
-        attrib_1 = {"TypeUnit": "Точка", "SuNmb": str(number_tochki)}
-        attrib_2 = {"X": str(total_sp[ychastok][x]), "Y": str(total_sp[ychastok][y]), "NumGeopoint": str(number_tochki),
-                    "DeltaGeopoint": DeltaGeopoint,
-                    "GeopointOpred": GeopointOpred}
-        if len(total_sp[ychastok][11:]) == 1:
+    if len(total_sp[ychastok][11:]) == 1:
+        for neighbor in root.iter('{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
             neighbor.attrib['X'] = total_sp[ychastok][x]
             neighbor.attrib['Y'] = total_sp[ychastok][y]
             x += 2
             y += 2
-        if len(total_sp[ychastok][11:]) > 1:
-            neighbor.attrib['X'] = total_sp[ychastok][x]
-            neighbor.attrib['Y'] = total_sp[ychastok][y]
+        root.attrib['GUID'] = str_guid
+        tree.write(f'.//Готовые//{total_sp[ychastok][0]} {total_sp[ychastok][1][:2]}_{total_sp[ychastok][1][3:]}.xml',
+               encoding='utf-8', xml_declaration=True)
+    if len(total_sp[ychastok][11:]) > 1:
+        for neighbor_1 in root.iter(
+                '{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
+            DeltaGeopoint = str(neighbor_1.attrib['DeltaGeopoint'])
+            GeopointOpred = str(neighbor_1.attrib['GeopointOpred'])
+            attrib_1 = {"TypeUnit": "Точка", "SuNmb": str(number_tochki)}
+            attrib_2 = {"X": str(total_sp[ychastok][x]), "Y": str(total_sp[ychastok][y]), "NumGeopoint": str(number_tochki),
+                    "DeltaGeopoint": DeltaGeopoint,
+                    "GeopointOpred": GeopointOpred}
+            neighbor_1.attrib['X'] = total_sp[ychastok][x]
+            neighbor_1.attrib['Y'] = total_sp[ychastok][y]
             x += 2
             y += 2
             count += 1
             if count == 6: # шестерка потому что, после пятой точки , становится 6 и тогда заходит в этот if.
                 root[1][0][4].attrib['SuNmb'] = '5'
-                neighbor.attrib['NumGeopoint'] = "5"
+                neighbor_1.attrib['NumGeopoint'] = "5"
                 attrib_2['X'] = str(total_sp[ychastok][x])
                 attrib_2['Y'] = str(total_sp[ychastok][y])
                 count += 1
@@ -131,8 +134,15 @@ for i in range(len(total_sp)):
                 ET.SubElement(root[1][0][number_coord],
                               "{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate ",
                               attrib_2)
-    tree.write(f'.//Готовые//{total_sp[ychastok][0]} {total_sp[ychastok][1][:2]}_{total_sp[ychastok][1][3:]}.xml',
-               encoding='utf-8', xml_declaration = True)
+        root.attrib['GUID'] = str_guid
+        tree.write(f'.//Готовые//{total_sp[ychastok][0]} {total_sp[ychastok][1][:2]}_{total_sp[ychastok][1][3:]}.xml',
+               encoding='utf-8', xml_declaration=True)
+        tree = ET.parse('Территории.xml')
+        root = tree.getroot()
+
+
+
+
 
 # print(root[1][0][0])
 
