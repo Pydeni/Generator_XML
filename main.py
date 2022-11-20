@@ -1,10 +1,10 @@
 import xml.etree.ElementTree as ET
 from openpyxl import load_workbook
 import uuid
+import os
 
 # Загружаем файл экселя
 wb = load_workbook('Координаты пунктов охранных зон пунктов ГГC.xlsx')
-
 
 # печатаем список листов если надо
 # sheets = wb.sheetnames
@@ -40,13 +40,14 @@ for i in range(2, sheet2.max_row):
         else:
             sp.append(column[i].value)
     total_sp.append(sp)
-# Удаляем последний элемент (он пустой список)
+# Удаляем последний элемент (он пустой список), если надо
 # del total_sp[-1]
-# В первом цикле добавляем X и Y в конец списка, 2 циклом удаляем NONE
+# удаляем NONE
 for nn in total_sp:
-    if nn == []:
+    if nn == [] or nn[0] == None:
         indx = total_sp.index(nn)
         del total_sp[indx]
+# Добавляем замыкающую точку в конце списка
 for gg in total_sp:
     gg.append(gg[3])
     gg.append(gg[4])
@@ -55,7 +56,7 @@ for gg in total_sp:
 
 
 
-# #Добавляем пространство имен, если есть
+# Добавляем пространство имен, если есть
 ET.register_namespace("", "urn://x-artefacts-rosreestr-ru/incoming/territory-to-gkn/1.0.4")
 ET.register_namespace("p1", "http://www.w3.org/2001/XMLSchema-instance")
 ET.register_namespace("Spa2", "urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1")
@@ -63,17 +64,32 @@ ET.register_namespace("CadEng4", "urn://x-artefacts-rosreestr-ru/commons/complex
 ET.register_namespace("Doc5", "urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1")
 ET.register_namespace("tns", "urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1")
 ET.register_namespace("schemaLocation", "urn://x-artefacts-rosreestr-ru/incoming/territory-to-gkn/1.0.4 TerritoryToGKN_v01.xsd")
+ET.register_namespace("DocI5", "urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1")
+ET.register_namespace("Sen5", "urn://x-artefacts-rosreestr-ru/commons/complex-types/sender/5.0.1")
+ET.register_namespace("Org4", "urn://x-artefacts-rosreestr-ru/commons/complex-types/organization/4.0.1")
+ET.register_namespace("AdrInp6", "urn://x-artefacts-rosreestr-ru/commons/complex-types/address-input/6.0.1")
+ET.register_namespace("Gov5", "urn://x-artefacts-rosreestr-ru/commons/complex-types/governance/5.0.1")
+ET.register_namespace("Person5", "urn://x-artefacts-rosreestr-ru/commons/complex-types/person/5.0.2")
+ET.register_namespace("Zon4", "urn://x-artefacts-rosreestr-ru/commons/complex-types/zone/4.2.2")
+ET.register_namespace("", "urn://x-artefacts-rosreestr-ru/incoming/zone-to-gkn/5.0.8")
+ET.register_namespace("schemaLocation", "urn://x-artefacts-rosreestr-ru/incoming/zone-to-gkn/5.0.8 ZoneToGKN_v05.xsd")
 
-# #Парсим хмл
-tree = ET.parse('Территории.xml')
+# Парсим хмл с территориями и зонами
+tree = ET.parse('Территория.xml')
 root = tree.getroot()
+tree_1 = ET.parse('Зона.xml')
+root_1 = tree_1.getroot()
+
+# Проверяет, существует папка "Готовые", если нет, то создает, иначе пропускает
+if not os.path.isdir("Готовые"):
+     os.mkdir("Готовые")
 
 # Проходимся по общему списку и в каждом меняем координаты
 for i in range(len(total_sp)):
     # Генерируем рандомный GUID
     guid = uuid.uuid4()
     # Конвертируем в строку
-    str_guid = str(uuid.uuid4())
+    str_guid = str(guid)
     ychastok =+ i
     raion = total_sp[ychastok][2]
     x = 3
@@ -88,8 +104,18 @@ for i in range(len(total_sp)):
             x += 2
             y += 2
         root.attrib['GUID'] = str_guid
-        tree.write(f'.//Готовые//{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}.xml',
+        root[0][1][0][1].text = "1047727043561"
+        if not os.path.isdir(f'.//Готовые/{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}'):
+            os.mkdir(f'.//Готовые/{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}')
+        tree.write(f'.//Готовые/{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}//{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}.xml',
                encoding='utf-8', xml_declaration=True)
+        root_1[3][0][4][1][1].attrib['GUID'] = str_guid
+        root_1[3][0][4][1][1].attrib['Name'] = f'{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}.xml'
+        guid = uuid.uuid4()
+        str_guid = str(guid)
+        root_1.attrib['GUID'] = str_guid
+        tree_1.write(f'.//Готовые/{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}//Зона {total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}.xml',
+            encoding='utf-8', xml_declaration=True)
     if len(total_sp[ychastok][12:]) > 1:
         for neighbor_1 in root.iter(
                 '{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
@@ -139,10 +165,24 @@ for i in range(len(total_sp)):
                               "{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate ",
                               attrib_2)
         root.attrib['GUID'] = str_guid
-        tree.write(f'.//Готовые//{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}.xml',
-               encoding='utf-8', xml_declaration=True)
-        tree = ET.parse('Территории.xml')
+        root[0][1][0][1].text = "1047727043561"
+        if not os.path.isdir(f'.//Готовые/{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}'):
+            os.mkdir(f'.//Готовые/{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}')
+        tree.write(
+            f'.//Готовые/{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}//{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}.xml',
+            encoding='utf-8', xml_declaration=True)
+        root_1[3][0][4][1][1].attrib['GUID'] = str_guid
+        root_1[3][0][4][1][1].attrib['Name'] = f'{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}.xml'
+        guid = uuid.uuid4()
+        str_guid = str(guid)
+        root_1.attrib['GUID'] = str_guid
+        tree_1.write(
+            f'.//Готовые/{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}//Зона {total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}.xml',
+            encoding='utf-8', xml_declaration=True)
+        tree = ET.parse('Территория.xml')
         root = tree.getroot()
+        tree_1 = ET.parse('Зона.xml')
+        root_1 = tree_1.getroot()
 
 
 
