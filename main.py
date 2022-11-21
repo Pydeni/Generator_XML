@@ -57,13 +57,14 @@ for gg in total_sp:
 
 
 # Добавляем пространство имен, если есть
+ET.register_namespace("", "urn://x-artefacts-rosreestr-ru/incoming/zone-to-gkn/5.0.8")
 ET.register_namespace("", "urn://x-artefacts-rosreestr-ru/incoming/territory-to-gkn/1.0.4")
 ET.register_namespace("p1", "http://www.w3.org/2001/XMLSchema-instance")
 ET.register_namespace("Spa2", "urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1")
 ET.register_namespace("CadEng4", "urn://x-artefacts-rosreestr-ru/commons/complex-types/cadastral-engineer/4.1.1")
 ET.register_namespace("Doc5", "urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1")
-ET.register_namespace("tns", "urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1")
 ET.register_namespace("schemaLocation", "urn://x-artefacts-rosreestr-ru/incoming/territory-to-gkn/1.0.4 TerritoryToGKN_v01.xsd")
+ET.register_namespace("tns", "urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1")
 ET.register_namespace("DocI5", "urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1")
 ET.register_namespace("Sen5", "urn://x-artefacts-rosreestr-ru/commons/complex-types/sender/5.0.1")
 ET.register_namespace("Org4", "urn://x-artefacts-rosreestr-ru/commons/complex-types/organization/4.0.1")
@@ -71,7 +72,6 @@ ET.register_namespace("AdrInp6", "urn://x-artefacts-rosreestr-ru/commons/complex
 ET.register_namespace("Gov5", "urn://x-artefacts-rosreestr-ru/commons/complex-types/governance/5.0.1")
 ET.register_namespace("Person5", "urn://x-artefacts-rosreestr-ru/commons/complex-types/person/5.0.2")
 ET.register_namespace("Zon4", "urn://x-artefacts-rosreestr-ru/commons/complex-types/zone/4.2.2")
-ET.register_namespace("", "urn://x-artefacts-rosreestr-ru/incoming/zone-to-gkn/5.0.8")
 ET.register_namespace("schemaLocation", "urn://x-artefacts-rosreestr-ru/incoming/zone-to-gkn/5.0.8 ZoneToGKN_v05.xsd")
 
 # Парсим хмл с территориями и зонами
@@ -111,6 +111,13 @@ for i in range(len(total_sp)):
                encoding='utf-8', xml_declaration=True)
         root_1[3][0][4][1][1].attrib['GUID'] = str_guid
         root_1[3][0][4][1][1].attrib['Name'] = f'{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}.xml'
+        root_1[0][1].text = f'{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}'
+        root_1[0][3].text = '2022-10-18'
+        root_1[2][0][2].text = 'П/211'
+        root_1[2][0][3].text = '2022-10-18'
+        root_1[2][0][6].attrib['Name'] = 'Applied_files\Приказ_Управления_от_18.10.2022_№_П211.pdf'
+        root_1[3][0][0].text = f'{total_sp[ychastok][2]}'
+        root_1[3][0][2].text = f'{total_sp[ychastok][1]}'
         guid = uuid.uuid4()
         str_guid = str(guid)
         root_1.attrib['GUID'] = str_guid
@@ -173,6 +180,13 @@ for i in range(len(total_sp)):
             encoding='utf-8', xml_declaration=True)
         root_1[3][0][4][1][1].attrib['GUID'] = str_guid
         root_1[3][0][4][1][1].attrib['Name'] = f'{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}.xml'
+        root_1[0][1].text = f'{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}'
+        root_1[0][3].text = '2022-10-18'
+        root_1[2][0][2].text = 'П/211'
+        root_1[2][0][3].text = '2022-10-18'
+        root_1[2][0][6].attrib['Name'] = 'Applied_files\Приказ_Управления_от_18.10.2022_№_П211.pdf'
+        root_1[3][0][0].text = f'{total_sp[ychastok][2]}'
+        root_1[3][0][2].text = f'{total_sp[ychastok][1]}'
         guid = uuid.uuid4()
         str_guid = str(guid)
         root_1.attrib['GUID'] = str_guid
