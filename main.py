@@ -105,23 +105,24 @@ for i in range(len(total_sp)):
             y += 2
         root.attrib['GUID'] = str_guid
         root[0][1][0][1].text = "1047727043561"
-        if not os.path.isdir(f'.//Готовые/{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}'):
-            os.mkdir(f'.//Готовые/{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}')
-        tree.write(f'.//Готовые/{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}//{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}.xml',
-               encoding='utf-8', xml_declaration=True)
         root_1[3][0][4][1][1].attrib['GUID'] = str_guid
-        root_1[3][0][4][1][1].attrib['Name'] = f'{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}.xml'
+        root_1[3][0][4][1][1].attrib['Name'] = f'TerritoryToGKN_{str_guid}.xml'
         root_1[0][1].text = f'{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}'
         root_1[0][3].text = '2022-10-18'
+        root_1[2][0][1].text = "Об установлении границ охранных зон пунктов государственной геодезической сети"
         root_1[2][0][2].text = 'П/211'
         root_1[2][0][3].text = '2022-10-18'
         root_1[2][0][6].attrib['Name'] = 'Applied_files\Приказ_Управления_от_18.10.2022_№_П211.pdf'
         root_1[3][0][0].text = f'{total_sp[ychastok][2]}'
         root_1[3][0][2].text = f'{total_sp[ychastok][1]}'
-        guid = uuid.uuid4()
-        str_guid = str(guid)
-        root_1.attrib['GUID'] = str_guid
-        tree_1.write(f'.//Готовые/{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}//Зона {total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}.xml',
+        guid_1 = uuid.uuid4()
+        str_guid_1 = str(guid_1)
+        root_1.attrib['GUID'] = str_guid_1
+        if not os.path.isdir(f'.//Готовые/ZoneToGKN_{str_guid_1}'):
+            os.mkdir(f'.//Готовые/ZoneToGKN_{str_guid_1}')
+        tree.write(f'.//Готовые/ZoneToGKN_{str_guid_1}//TerritoryToGKN_{str_guid}.xml',
+               encoding='utf-8', xml_declaration=True)
+        tree_1.write(f'.//Готовые/ZoneToGKN_{str_guid_1}//ZoneToGKN_{str_guid_1}.xml',
             encoding='utf-8', xml_declaration=True)
     if len(total_sp[ychastok][12:]) > 1:
         for neighbor_1 in root.iter(
@@ -173,26 +174,25 @@ for i in range(len(total_sp)):
                               attrib_2)
         root.attrib['GUID'] = str_guid
         root[0][1][0][1].text = "1047727043561"
-        if not os.path.isdir(f'.//Готовые/{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}'):
-            os.mkdir(f'.//Готовые/{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}')
-        tree.write(
-            f'.//Готовые/{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}//{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}.xml',
-            encoding='utf-8', xml_declaration=True)
         root_1[3][0][4][1][1].attrib['GUID'] = str_guid
-        root_1[3][0][4][1][1].attrib['Name'] = f'{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}.xml'
+        root_1[3][0][4][1][1].attrib['Name'] = f'TerritoryToGKN_{str_guid}.xml'
         root_1[0][1].text = f'{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}'
         root_1[0][3].text = '2022-10-18'
+        root_1[2][0][1].text = "Об установлении границ охранных зон пунктов государственной геодезической сети"
         root_1[2][0][2].text = 'П/211'
         root_1[2][0][3].text = '2022-10-18'
         root_1[2][0][6].attrib['Name'] = 'Applied_files\Приказ_Управления_от_18.10.2022_№_П211.pdf'
         root_1[3][0][0].text = f'{total_sp[ychastok][2]}'
         root_1[3][0][2].text = f'{total_sp[ychastok][1]}'
-        guid = uuid.uuid4()
-        str_guid = str(guid)
-        root_1.attrib['GUID'] = str_guid
-        tree_1.write(
-            f'.//Готовые/{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}//Зона {total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}.xml',
-            encoding='utf-8', xml_declaration=True)
+        guid_1 = uuid.uuid4()
+        str_guid_1 = str(guid)
+        root_1.attrib['GUID'] = str_guid_1
+        if not os.path.isdir(f'.//Готовые/ZoneToGKN_{str_guid_1}'):
+            os.mkdir(f'.//Готовые/ZoneToGKN_{str_guid_1}')
+        tree.write(f'.//Готовые/ZoneToGKN_{str_guid_1}//TerritoryToGKN_{str_guid}.xml',
+                   encoding='utf-8', xml_declaration=True)
+        tree_1.write(f'.//Готовые/ZoneToGKN_{str_guid_1}//ZoneToGKN_{str_guid_1}.xml',
+                     encoding='utf-8', xml_declaration=True)
         tree = ET.parse('Территория.xml')
         root = tree.getroot()
         tree_1 = ET.parse('Зона.xml')
