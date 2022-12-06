@@ -3,8 +3,6 @@ from openpyxl import load_workbook
 import uuid
 import os
 
-
-
 # Загружаем файл экселя
 wb = load_workbook('Координаты пунктов охранных зон пунктов ГГC.xlsx')
 
@@ -357,3 +355,4 @@ worksheet {'name': 'на здании ГГС'}"""
 # for i in range(len(total_spisok)):
 #     b =+ i
 #     tree.write(f'{total_spisok[b][0]}.xml', encoding='utf-8')
+input("Нажмите Enter для выхода")
