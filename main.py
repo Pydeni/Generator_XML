@@ -3,11 +3,14 @@ from openpyxl import load_workbook
 import uuid
 import os
 
+
+date_prikaz = "30.05.2018"
+number_prikaz = "148-Пр"
 # Загружаем файл экселя
 wb = load_workbook('Координаты пунктов охранных зон пунктов ГГC.xlsx')
 
 # печатаем список листов если надо
-# sheets = wb.sheetnames
+sheets = wb.sheetnames
 # for sheet in sheets:
 #     print(sheet)
 
@@ -25,21 +28,20 @@ for i in range(2, sheet.max_row):
             sp.append(column[i].value)
     total_sp.append(sp)
 
-# получаем другой лист
-sheet2 = wb['на здании ГГС']
+# получаем другой лист если есть
+if len(sheets) > 1:
+    sheet2 = wb['на здании ГГС']
+    # Делаем второй лист активным
+    wb.active = 1
+    for i in range(2, sheet2.max_row):
+        sp = []
+        for column in sheet2.iter_cols(2, sheet2.max_column):
+            if column[i].value == None:
+                continue
+            else:
+                sp.append(column[i].value)
+        total_sp.append(sp)
 
-
-# Делаем второй лист активным
-wb.active = 1
-
-for i in range(2, sheet2.max_row):
-    sp = []
-    for column in sheet2.iter_cols(2, sheet2.max_column):
-        if column[i].value == None:
-            continue
-        else:
-            sp.append(column[i].value)
-    total_sp.append(sp)
 # Удаляем последний элемент (он пустой список), если надо
 # del total_sp[-1]
 # удаляем NONE
@@ -84,7 +86,7 @@ root_1 = tree_1.getroot()
 if not os.path.isdir("Готовые"):
      os.mkdir("Готовые")
 
-# Проходимся по общему списку и в каждом меняем координаты
+# Проходимся по общему списку и в каждом меняем координаты, при необходимости добавляем новые
 for i in range(len(total_sp)):
     # Генерируем рандомный GUID
     guid = uuid.uuid4()
@@ -108,11 +110,11 @@ for i in range(len(total_sp)):
         root_1[3][0][4][1][1].attrib['GUID'] = str_guid
         root_1[3][0][4][1][1].attrib['Name'] = f'TerritoryToGKN_{str_guid}.xml'
         root_1[0][1].text = f'{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}'
-        root_1[0][3].text = '2022-10-18'
+        root_1[0][3].text = date_prikaz
         root_1[2][0][1].text = "Об установлении границ охранных зон пунктов государственной геодезической сети"
-        root_1[2][0][2].text = 'П/211'
-        root_1[2][0][3].text = '2022-10-18'
-        root_1[2][0][6].attrib['Name'] = 'Applied_files\Приказ_Управления_от_18.10.2022_№_П211.pdf'
+        root_1[2][0][2].text = number_prikaz
+        root_1[2][0][3].text = date_prikaz
+        root_1[2][0][6].attrib['Name'] = f'Applied_files\Приказ_Управления_от_{date_prikaz}_№_{number_prikaz}.pdf'
         root_1[3][0][0].text = f'{total_sp[ychastok][2]}'
         root_1[3][0][2].text = f'{total_sp[ychastok][1]}'
         guid_1 = uuid.uuid4()
@@ -177,11 +179,11 @@ for i in range(len(total_sp)):
         root_1[3][0][4][1][1].attrib['GUID'] = str_guid
         root_1[3][0][4][1][1].attrib['Name'] = f'TerritoryToGKN_{str_guid}.xml'
         root_1[0][1].text = f'{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}'
-        root_1[0][3].text = '2022-10-18'
+        root_1[0][3].text = date_prikaz
         root_1[2][0][1].text = "Об установлении границ охранных зон пунктов государственной геодезической сети"
-        root_1[2][0][2].text = 'П/211'
-        root_1[2][0][3].text = '2022-10-18'
-        root_1[2][0][6].attrib['Name'] = 'Applied_files\Приказ_Управления_от_18.10.2022_№_П211.pdf'
+        root_1[2][0][2].text = number_prikaz
+        root_1[2][0][3].text = date_prikaz
+        root_1[2][0][6].attrib['Name'] = f'Applied_files\Приказ_Управления_от_{date_prikaz}_№_{number_prikaz}.pdf'
         root_1[3][0][0].text = f'{total_sp[ychastok][2]}'
         root_1[3][0][2].text = f'{total_sp[ychastok][1]}'
         guid_1 = uuid.uuid4()
