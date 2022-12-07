@@ -79,9 +79,15 @@ root = tree.getroot()
 tree_1 = ET.parse('Зона.xml')
 root_1 = tree_1.getroot()
 
+
+
 # Проверяет, существует папка "Готовые", если нет, то создает, иначе пропускает
 if not os.path.isdir("Готовые"):
      os.mkdir("Готовые")
+
+
+
+
 
 # Ввод даты и номера приказа/ов
 count_prikaz = input("Приказов больше одного? Введите да или нет ")
@@ -129,6 +135,11 @@ if count_prikaz == 'нет':
                        encoding='utf-8', xml_declaration=True)
             tree_1.write(f'.//Готовые/ZoneToGKN_{str_guid_1}//ZoneToGKN_{str_guid_1}.xml',
                          encoding='utf-8', xml_declaration=True)
+            tree = ET.parse('Территория.xml')
+            root = tree.getroot()
+            tree_1 = ET.parse('Зона.xml')
+            root_1 = tree_1.getroot()
+
         if len(total_sp[ychastok][12:]) > 1:
             for neighbor_1 in root.iter(
                     '{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
@@ -199,6 +210,7 @@ if count_prikaz == 'нет':
                        encoding='utf-8', xml_declaration=True)
             tree_1.write(f'.//Готовые/ZoneToGKN_{str_guid_1}//ZoneToGKN_{str_guid_1}.xml',
                          encoding='utf-8', xml_declaration=True)
+
             tree = ET.parse('Территория.xml')
             root = tree.getroot()
             tree_1 = ET.parse('Зона.xml')
@@ -221,6 +233,7 @@ if count_prikaz == "да":
         count = 1
         number_tochki = 6
         number_coord = 5
+        # Условие, где 4 точки
         if len(total_sp[ychastok][12:]) == 1:
             for neighbor in root.iter(
                     '{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
@@ -233,22 +246,48 @@ if count_prikaz == "да":
             root_1[3][0][4][1][1].attrib['GUID'] = str_guid
             root_1[3][0][4][1][1].attrib['Name'] = f'TerritoryToGKN_{str_guid}.xml'
             root_1[0][1].text = f'{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}'
-            root_1[0][3].text = f'{date_prikaz}, {date_prikaz_1}'
+            root_1[0][3].text = f'{date_prikaz}'
             root_1[2][0][1].text = "Об установлении границ охранных зон пунктов государственной геодезической сети"
-            root_1[2][0][2].text = f'{number_prikaz}, {number_prikaz_1}'
-            root_1[2][0][3].text = f'{date_prikaz}, {date_prikaz_1}'
-            root_1[2][0][6].attrib['Name'] = f'Applied_files\Приказ_Управления_от_{date_prikaz}_№_{number_prikaz}.pdf, Приказ_Управления_от_{date_prikaz_1}_№_{number_prikaz_1}.pdf'
+            root_1[2][0][2].text = f'{number_prikaz}'
+            root_1[2][0][3].text = f'{date_prikaz}'
+            root_1[2][0][6].attrib['Name'] = f'Applied_files\Приказ_Управления_от_{date_prikaz}_№_{number_prikaz}.pdf'
             root_1[3][0][0].text = f'{total_sp[ychastok][2]}'
             root_1[3][0][2].text = f'{total_sp[ychastok][1]}'
             guid_1 = uuid.uuid4()
             str_guid_1 = str(guid_1)
             root_1.attrib['GUID'] = str_guid_1
+            # Добавляем новый подэлемент
+            ET.SubElement(root_1[2], '{urn://x-artefacts-rosreestr-ru/incoming/zone-to-gkn/5.0.8}Document')
+            # Добавляем в него еще подэлементы с новым текстом
+            ET.SubElement(root_1[2][1],
+                          '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}CodeDocument').text = '558227000000'
+            ET.SubElement(root_1[2][1],
+                          '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}Name').text = 'Об установлении границ охранных зон пунктов государственной геодезической сети'
+            ET.SubElement(root_1[2][1],
+                          '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}Number').text = number_prikaz_1
+            ET.SubElement(root_1[2][1],
+                          '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}Date').text = date_prikaz_1
+            ET.SubElement(root_1[2][1],
+                          '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}IssueOrgan').text = 'Управление Росреестра по Московской области'
+            ET.SubElement(root_1[2][1],
+                          '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}Desc').text = 'Решение не подлежит публикации в связи с отсутствием необходимости опубликования таких решений в соответствии с Постановлением Правительства РФ от 21 августа 2019 г. N 1080 "Об охранных зонах пунктов государственной геодезической сети, государственной нивелирной сети и государственной гравиметрической сети"'
+            ET.SubElement(root_1[2][1],
+                          '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}AppliedFile').attrib[
+                'Name'] = f'Applied_files\Приказ_Управления_от_{date_prikaz_1}_№_{number_prikaz_1}.pdf'
+
+            root_1[2][1][6].attrib['Kind'] = '01'
+
             if not os.path.isdir(f'.//Готовые/ZoneToGKN_{str_guid_1}'):
                 os.mkdir(f'.//Готовые/ZoneToGKN_{str_guid_1}')
             tree.write(f'.//Готовые/ZoneToGKN_{str_guid_1}//TerritoryToGKN_{str_guid}.xml',
                        encoding='utf-8', xml_declaration=True)
             tree_1.write(f'.//Готовые/ZoneToGKN_{str_guid_1}//ZoneToGKN_{str_guid_1}.xml',
                          encoding='utf-8', xml_declaration=True)
+            tree = ET.parse('Территория.xml')
+            root = tree.getroot()
+            tree_1 = ET.parse('Зона.xml')
+            root_1 = tree_1.getroot()
+        # Условие, где  больше 4 точек
         if len(total_sp[ychastok][12:]) > 1:
             for neighbor_1 in root.iter(
                     '{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
@@ -313,6 +352,25 @@ if count_prikaz == "да":
             guid_1 = uuid.uuid4()
             str_guid_1 = str(guid)
             root_1.attrib['GUID'] = str_guid_1
+            # Добавляем новый подэлемент
+            ET.SubElement(root_1[2], '{urn://x-artefacts-rosreestr-ru/incoming/zone-to-gkn/5.0.8}Document')
+            # Добавляем в него еще подэлементы с новым текстом
+            ET.SubElement(root_1[2][1],
+                          '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}CodeDocument').text = '558227000000'
+            ET.SubElement(root_1[2][1],
+                          '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}Name').text = 'Об установлении границ охранных зон пунктов государственной геодезической сети'
+            ET.SubElement(root_1[2][1],
+                          '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}Number').text = number_prikaz_1
+            ET.SubElement(root_1[2][1],
+                          '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}Date').text = date_prikaz_1
+            ET.SubElement(root_1[2][1],
+                          '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}IssueOrgan').text = 'Управление Росреестра по Московской области'
+            ET.SubElement(root_1[2][1],
+                          '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}Desc').text = 'Решение не подлежит публикации в связи с отсутствием необходимости опубликования таких решений в соответствии с Постановлением Правительства РФ от 21 августа 2019 г. N 1080 "Об охранных зонах пунктов государственной геодезической сети, государственной нивелирной сети и государственной гравиметрической сети"'
+            ET.SubElement(root_1[2][1],
+                          '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}AppliedFile').attrib[
+                'Name'] = f'Applied_files\Приказ_Управления_от_{date_prikaz_1}_№_{number_prikaz_1}.pdf'
+            root_1[2][1][6].attrib['Kind'] = '01'
             if not os.path.isdir(f'.//Готовые/ZoneToGKN_{str_guid_1}'):
                 os.mkdir(f'.//Готовые/ZoneToGKN_{str_guid_1}')
             tree.write(f'.//Готовые/ZoneToGKN_{str_guid_1}//TerritoryToGKN_{str_guid}.xml',
@@ -326,10 +384,18 @@ if count_prikaz == "да":
 
 
 
+# Теги внутренних элементов
+# for new_ar in root_1[2][0]:
+#     print(new_ar.tag)
 
 
+# Смотрим какие элементы и подэлементы есть в xml
+# for elm in root_1:
+#     for sumelem in elm:
+#         print(sumelem.tag)
 
-# print(root[1][0][0])
+# Добавить подэлемент
+# ET.SubElement(root_1[2], '{urn://x-artefacts-rosreestr-ru/incoming/zone-to-gkn/5.0.8}Document')
 
 
 # for xx in root.iter("{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}SpatialElement"):
@@ -337,9 +403,15 @@ if count_prikaz == "да":
 
 """Для запоминания"""
 # Получается словарь (тег - ключ(name), attr - значение(название листа)).
-# for child in root:
+# for child in root_1[2]:
 #     print(child.tag, child.attrib)
 
+# for b in root_1.iter("{urn://x-artefacts-rosreestr-ru/incoming/zone-to-gkn/5.0.8}Document"):
+#     print(b[0].attrib)
+
+
+
+# {urn://x-artefacts-rosreestr-ru/incoming/zone-to-gkn/5.0.8}Documents
 """worksheet {'name': 'грунтовые ГГС'}
 worksheet {'name': 'на здании ГГС'}"""
 
@@ -355,4 +427,4 @@ worksheet {'name': 'на здании ГГС'}"""
 # for i in range(len(total_spisok)):
 #     b =+ i
 #     tree.write(f'{total_spisok[b][0]}.xml', encoding='utf-8')
-input("Нажмите Enter для выхода")
+# input("Нажмите Enter для выхода")
