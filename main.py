@@ -107,6 +107,7 @@ if count_prikaz == 'нет':
         count = 1
         number_tochki = 6
         number_coord = 5
+        # Если 4 точки
         if len(total_sp[ychastok][12:]) == 1:
             for neighbor in root.iter(
                     '{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
@@ -116,19 +117,20 @@ if count_prikaz == 'нет':
                 y += 2
             root.attrib['GUID'] = str_guid
             root[0][1][0][1].text = "1047727043561"
+            guid_1 = uuid.uuid4()
+            str_guid_1 = str(guid_1)
+            root_1.attrib['GUID'] = str_guid_1
             root_1[3][0][4][1][1].attrib['GUID'] = str_guid
             root_1[3][0][4][1][1].attrib['Name'] = f'TerritoryToGKN_{str_guid}.xml'
-            root_1[0][1].text = f'{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}'
+            root_1[0][1].text = f'ZoneToGKN_{str_guid_1}'
             root_1[0][3].text = date_prikaz
             root_1[2][0][1].text = "Об установлении границ охранных зон пунктов государственной геодезической сети"
             root_1[2][0][2].text = number_prikaz
             root_1[2][0][3].text = date_prikaz
+            root_1[2][0][5].tag = '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}SourcePublication'
             root_1[2][0][6].attrib['Name'] = f'Applied_files\Приказ_Управления_от_{date_prikaz}_№_{number_prikaz}.pdf'
             root_1[3][0][0].text = f'{total_sp[ychastok][2]}'
             root_1[3][0][2].text = f'{total_sp[ychastok][1]}'
-            guid_1 = uuid.uuid4()
-            str_guid_1 = str(guid_1)
-            root_1.attrib['GUID'] = str_guid_1
             if not os.path.isdir(f'.//Готовые/ZoneToGKN_{str_guid_1}'):
                 os.mkdir(f'.//Готовые/ZoneToGKN_{str_guid_1}')
             tree.write(f'.//Готовые/ZoneToGKN_{str_guid_1}//TerritoryToGKN_{str_guid}.xml',
@@ -139,7 +141,7 @@ if count_prikaz == 'нет':
             root = tree.getroot()
             tree_1 = ET.parse('Зона.xml')
             root_1 = tree_1.getroot()
-
+        # Если больше 4 точек
         if len(total_sp[ychastok][12:]) > 1:
             for neighbor_1 in root.iter(
                     '{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate'):
@@ -191,19 +193,21 @@ if count_prikaz == 'нет':
                                   attrib_2)
             root.attrib['GUID'] = str_guid
             root[0][1][0][1].text = "1047727043561"
+            guid_1 = uuid.uuid4()
+            str_guid_1 = str(guid)
+            root_1.attrib['GUID'] = str_guid_1
             root_1[3][0][4][1][1].attrib['GUID'] = str_guid
             root_1[3][0][4][1][1].attrib['Name'] = f'TerritoryToGKN_{str_guid}.xml'
-            root_1[0][1].text = f'{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}'
+            root_1[0][1].text = f'ZoneToGKN_{str_guid_1}'
             root_1[0][3].text = date_prikaz
             root_1[2][0][1].text = "Об установлении границ охранных зон пунктов государственной геодезической сети"
             root_1[2][0][2].text = number_prikaz
             root_1[2][0][3].text = date_prikaz
+            root_1[2][0][
+                5].tag = '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}SourcePublication'
             root_1[2][0][6].attrib['Name'] = f'Applied_files\Приказ_Управления_от_{date_prikaz}_№_{number_prikaz}.pdf'
             root_1[3][0][0].text = f'{total_sp[ychastok][2]}'
             root_1[3][0][2].text = f'{total_sp[ychastok][1]}'
-            guid_1 = uuid.uuid4()
-            str_guid_1 = str(guid)
-            root_1.attrib['GUID'] = str_guid_1
             if not os.path.isdir(f'.//Готовые/ZoneToGKN_{str_guid_1}'):
                 os.mkdir(f'.//Готовые/ZoneToGKN_{str_guid_1}')
             tree.write(f'.//Готовые/ZoneToGKN_{str_guid_1}//TerritoryToGKN_{str_guid}.xml',
@@ -243,19 +247,21 @@ if count_prikaz == "да":
                 y += 2
             root.attrib['GUID'] = str_guid
             root[0][1][0][1].text = "1047727043561"
+            guid_1 = uuid.uuid4()
+            str_guid_1 = str(guid_1)
+            root_1.attrib['GUID'] = str_guid_1
             root_1[3][0][4][1][1].attrib['GUID'] = str_guid
             root_1[3][0][4][1][1].attrib['Name'] = f'TerritoryToGKN_{str_guid}.xml'
-            root_1[0][1].text = f'{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}'
+            root_1[0][1].text = f'ZoneToGKN_{str_guid_1}'
             root_1[0][3].text = f'{date_prikaz}'
             root_1[2][0][1].text = "Об установлении границ охранных зон пунктов государственной геодезической сети"
             root_1[2][0][2].text = f'{number_prikaz}'
             root_1[2][0][3].text = f'{date_prikaz}'
+            root_1[2][0][
+                5].tag = '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}SourcePublication'
             root_1[2][0][6].attrib['Name'] = f'Applied_files\Приказ_Управления_от_{date_prikaz}_№_{number_prikaz}.pdf'
             root_1[3][0][0].text = f'{total_sp[ychastok][2]}'
             root_1[3][0][2].text = f'{total_sp[ychastok][1]}'
-            guid_1 = uuid.uuid4()
-            str_guid_1 = str(guid_1)
-            root_1.attrib['GUID'] = str_guid_1
             # Добавляем новый подэлемент
             ET.SubElement(root_1[2], '{urn://x-artefacts-rosreestr-ru/incoming/zone-to-gkn/5.0.8}Document')
             # Добавляем в него еще подэлементы с новым текстом
@@ -270,7 +276,7 @@ if count_prikaz == "да":
             ET.SubElement(root_1[2][1],
                           '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}IssueOrgan').text = 'Управление Росреестра по Московской области'
             ET.SubElement(root_1[2][1],
-                          '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}Desc').text = 'Решение не подлежит публикации в связи с отсутствием необходимости опубликования таких решений в соответствии с Постановлением Правительства РФ от 21 августа 2019 г. N 1080 "Об охранных зонах пунктов государственной геодезической сети, государственной нивелирной сети и государственной гравиметрической сети"'
+                          '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}SourcePublication').text = 'Решение не подлежит публикации в связи с отсутствием необходимости опубликования таких решений в соответствии с Постановлением Правительства РФ от 21 августа 2019 г. N 1080 "Об охранных зонах пунктов государственной геодезической сети, государственной нивелирной сети и государственной гравиметрической сети"'
             ET.SubElement(root_1[2][1],
                           '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}AppliedFile').attrib[
                 'Name'] = f'Applied_files\Приказ_Управления_от_{date_prikaz_1}_№_{number_prikaz_1}.pdf'
@@ -339,19 +345,21 @@ if count_prikaz == "да":
                                   attrib_2)
             root.attrib['GUID'] = str_guid
             root[0][1][0][1].text = "1047727043561"
+            guid_1 = uuid.uuid4()
+            str_guid_1 = str(guid)
+            root_1.attrib['GUID'] = str_guid_1
             root_1[3][0][4][1][1].attrib['GUID'] = str_guid
             root_1[3][0][4][1][1].attrib['Name'] = f'TerritoryToGKN_{str_guid}.xml'
-            root_1[0][1].text = f'{total_sp[ychastok][0]} {total_sp[ychastok][2][:2]}_{total_sp[ychastok][2][3:]}'
+            root_1[0][1].text = f'ZoneToGKN_{str_guid_1}'
             root_1[0][3].text = date_prikaz
             root_1[2][0][1].text = "Об установлении границ охранных зон пунктов государственной геодезической сети"
             root_1[2][0][2].text = number_prikaz
             root_1[2][0][3].text = date_prikaz
+            root_1[2][0][
+                5].tag = '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}SourcePublication'
             root_1[2][0][6].attrib['Name'] = f'Applied_files\Приказ_Управления_от_{date_prikaz}_№_{number_prikaz}.pdf'
             root_1[3][0][0].text = f'{total_sp[ychastok][2]}'
             root_1[3][0][2].text = f'{total_sp[ychastok][1]}'
-            guid_1 = uuid.uuid4()
-            str_guid_1 = str(guid)
-            root_1.attrib['GUID'] = str_guid_1
             # Добавляем новый подэлемент
             ET.SubElement(root_1[2], '{urn://x-artefacts-rosreestr-ru/incoming/zone-to-gkn/5.0.8}Document')
             # Добавляем в него еще подэлементы с новым текстом
@@ -366,7 +374,7 @@ if count_prikaz == "да":
             ET.SubElement(root_1[2][1],
                           '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}IssueOrgan').text = 'Управление Росреестра по Московской области'
             ET.SubElement(root_1[2][1],
-                          '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}Desc').text = 'Решение не подлежит публикации в связи с отсутствием необходимости опубликования таких решений в соответствии с Постановлением Правительства РФ от 21 августа 2019 г. N 1080 "Об охранных зонах пунктов государственной геодезической сети, государственной нивелирной сети и государственной гравиметрической сети"'
+                          '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}SourcePublication').text = 'Решение не подлежит публикации в связи с отсутствием необходимости опубликования таких решений в соответствии с Постановлением Правительства РФ от 21 августа 2019 г. N 1080 "Об охранных зонах пунктов государственной геодезической сети, государственной нивелирной сети и государственной гравиметрической сети"'
             ET.SubElement(root_1[2][1],
                           '{urn://x-artefacts-rosreestr-ru/commons/complex-types/document-info/5.0.1}AppliedFile').attrib[
                 'Name'] = f'Applied_files\Приказ_Управления_от_{date_prikaz_1}_№_{number_prikaz_1}.pdf'
