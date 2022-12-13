@@ -6,6 +6,7 @@ import os
 # Загружаем файл экселя
 wb = load_workbook('Координаты пунктов охранных зон пунктов ГГC.xlsx')
 
+
 # печатаем список листов если надо
 sheets = wb.sheetnames
 # for sheet in sheets:
@@ -96,10 +97,6 @@ if count_prikaz == 'нет':
     number_prikaz = input("Введите номер приказа: ")
     # Проходимся по общему списку и в каждом меняем координаты, при необходимости добавляем новые
     for i in range(len(total_sp)):
-        # Генерируем рандомный GUID
-        guid = uuid.uuid4()
-        # Конвертируем в строку
-        str_guid = str(guid)
         ychastok = + i
         raion = total_sp[ychastok][2]
         x = 3
@@ -115,6 +112,10 @@ if count_prikaz == 'нет':
                 neighbor.attrib['Y'] = total_sp[ychastok][y]
                 x += 2
                 y += 2
+            # Генерируем рандомный GUID
+            guid = uuid.uuid4()
+            # Конвертируем в строку
+            str_guid = str(guid)
             root.attrib['GUID'] = str_guid
             root[0][1][0][1].text = "1047727043561"
             guid_1 = uuid.uuid4()
@@ -191,10 +192,14 @@ if count_prikaz == 'нет':
                     ET.SubElement(root[1][0][number_coord],
                                   "{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate ",
                                   attrib_2)
+            # Генерируем рандомный GUID
+            guid = uuid.uuid4()
+            # Конвертируем в строку
+            str_guid = str(guid)
             root.attrib['GUID'] = str_guid
             root[0][1][0][1].text = "1047727043561"
             guid_1 = uuid.uuid4()
-            str_guid_1 = str(guid)
+            str_guid_1 = str(guid_1)
             root_1.attrib['GUID'] = str_guid_1
             root_1[3][0][4][1][1].attrib['GUID'] = str_guid
             root_1[3][0][4][1][1].attrib['Name'] = f'TerritoryToGKN_{str_guid}.xml'
@@ -226,10 +231,6 @@ if count_prikaz == "да":
     number_prikaz = input("Введите номер первого приказа: ")
     number_prikaz_1 = input("Введите номер второго приказа: ")
     for i in range(len(total_sp)):
-        # Генерируем рандомный GUID
-        guid = uuid.uuid4()
-        # Конвертируем в строку
-        str_guid = str(guid)
         ychastok = + i
         raion = total_sp[ychastok][2]
         x = 3
@@ -245,6 +246,10 @@ if count_prikaz == "да":
                 neighbor.attrib['Y'] = total_sp[ychastok][y]
                 x += 2
                 y += 2
+            # Генерируем рандомный GUID
+            guid = uuid.uuid4()
+            # Конвертируем в строку
+            str_guid = str(guid)
             root.attrib['GUID'] = str_guid
             root[0][1][0][1].text = "1047727043561"
             guid_1 = uuid.uuid4()
@@ -343,10 +348,14 @@ if count_prikaz == "да":
                     ET.SubElement(root[1][0][number_coord],
                                   "{urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/2.0.1}Ordinate ",
                                   attrib_2)
+            # Генерируем рандомный GUID
+            guid = uuid.uuid4()
+            # Конвертируем в строку
+            str_guid = str(guid)
             root.attrib['GUID'] = str_guid
             root[0][1][0][1].text = "1047727043561"
             guid_1 = uuid.uuid4()
-            str_guid_1 = str(guid)
+            str_guid_1 = str(guid_1)
             root_1.attrib['GUID'] = str_guid_1
             root_1[3][0][4][1][1].attrib['GUID'] = str_guid
             root_1[3][0][4][1][1].attrib['Name'] = f'TerritoryToGKN_{str_guid}.xml'
@@ -435,4 +444,4 @@ worksheet {'name': 'на здании ГГС'}"""
 # for i in range(len(total_spisok)):
 #     b =+ i
 #     tree.write(f'{total_spisok[b][0]}.xml', encoding='utf-8')
-# input("Нажмите Enter для выхода")
+input("Нажмите Enter для выхода")
